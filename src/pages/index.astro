@@ -1,64 +1,81 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import Hero from '../components/Hero.astro';
-import PostList from '../components/PostList.astro';
-import Numbers from '../components/Numbers.astro';
-import Values from '../components/Values.astro';
-import Sponsors from '../components/Sponsors.astro';
-import Testimonials from '../components/Testimonials.astro';
+import Card from '../components/Card.astro';
+import SkillsGrid from '../components/SkillsGrid.astro';
+import { getCollection } from 'astro:content';
 import { getSite } from '../utils/consts';
+import { withBase } from '../utils/slugify';
+
 const site = await getSite();
+const projects = (await getCollection('projects'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
 ---
 
-<PageLayout
-	title={site.title}
->
-	<Hero
-		eyebrow="An Astro Blueprint"
-		title="A modern Astro scaffolding for agencies and studios."
-		description="Kickstart your next project with a solid foundation, featuring a blog, project showcases, and dark mode support."
-		actions={[
-			{ label: 'View Blog', href: '/blog' },
-			{ label: 'Get Quote', href: '/contact' },
-		]}
-	/>
+<PageLayout title={site.title} description={site.description}>
+  <section class="content-shell flex items-center" style="min-height: calc(100vh - calc(var(--grid-cell) * 1));">
+    <div class="grid gap-4 max-w-3xl">
+      <p class="eyebrow m-0">Senior Graphic Designer</p>
+      <h1 class="text-4xl md:text-5xl lg:text-6xl leading-tight m-0">
+        Design focused on <span class="serif-highlight">structure</span>,{' '}
+        <span class="serif-highlight">clarity</span>, and{' '}
+        <span class="serif-highlight">production precision</span>.
+      </h1>
+      <p class="text-muted text-base md:text-lg max-w-2xl m-0">Publications &amp; Visual Communication · Norrköping, Sweden</p>
+      <div class="flex flex-wrap gap-3 mt-3">
+        <a class="button primary" href="/projects">View Projects</a>
+        <a class="button secondary" href="/contact">Get in Touch</a>
+      </div>
+    </div>
+  </section>
 
-	<Sponsors
-	/>
+  <SkillsGrid />
 
-	<Numbers
-		eyebrow="Results"
-		title="We deliver consistently"
-		copy="A design-and-code stack ready to ship products without trading off quality."
-		stats={[
-			{ label: 'Projects shipped', value: '48', description: 'From discovery to ship without drama.' },
-			{ label: 'Average lead time', value: '6 weeks', description: 'Small teams, short cycles.' },
-			{ label: 'Client NPS', value: '72', description: 'Long-term relationships.' },
-			{ label: 'Response time', value: '<24h', description: 'Slack, email, or call.' },
-		]}
-	/>
+  <section class="content-shell py-16 space-y-10">
+    <header class="space-y-2">
+      <p class="eyebrow m-0">Selected Work</p>
+      <h2 class="text-3xl sm:text-4xl font-semibold leading-tight text-ink m-0">Recent Projects</h2>
+      <p class="text-muted m-0">Editorial design, brand identity, and visual systems across academic and commercial environments.</p>
+    </header>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {projects.map((project) => (
+        <Card
+          title={project.data.title}
+          href={withBase(`/projects/${project.id}/`)}
+          image={project.data.heroImage}
+          imageAlt={project.data.title}
+          description={project.data.description}
+          eyebrow={project.data.tags?.[0]}
+        />
+      ))}
+    </div>
+    <div class="pt-4">
+      <a class="button primary" href={withBase('/projects')}>View all projects</a>
+    </div>
+  </section>
 
-	<Values
-		eyebrow="Values"
-		title="How we show up"
-		copy="Principles we keep front-and-center so every project ships with the same intent and craft."
-		values={[
-			{ title: 'Clarity over noise', description: 'We write, design, and code to be understood quickly by teams and customers.' },
-			{ title: 'Bias for shipping', description: 'We prefer small, validated releases over long bets that never reach users.' },
-			{ title: 'Craft with pragmatism', description: 'Quality matters most when it serves the outcome—polish meets purpose.' },
-			{ title: 'Partnership mindset', description: 'We behave like embedded teammates, not vendors: transparent, responsive, reliable.' },
-		]}
-	/>
-
-	<PostList
-		heading="Blog"
-		limit={3}
-		viewAllHref="/blog"
-	/>
-		
-	<Testimonials
-		eyebrow="Testimonials"
-		title="What our clients say"
-	/>
+  <section class="content-shell py-16 border-t border-[color:var(--color-border)]">
+    <div class="grid gap-8 md:grid-cols-2">
+      <div class="space-y-4">
+        <p class="eyebrow m-0">Approach</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold leading-tight text-ink m-0">Systematic <span class="font-serif font-normal italic text-accent">by design.</span></h2>
+        <p class="text-muted">I prioritize <span class="serif-highlight">hierarchy</span>, <span class="serif-highlight">consistency</span>, and <span class="serif-highlight">clarity</span> in every project — whether it's a long-format publication, a brand identity, or a research catalogue.</p>
+        <p class="text-muted"><span class="serif-highlight">10 years</span> of experience working across academic institutions and commercial clients in Ukraine, Sweden, and internationally.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        {[
+          { label: 'Discipline', value: 'Editorial Design' },
+          { label: 'Specialty', value: 'Print Production' },
+          { label: 'Focus', value: 'Publications & Visual Systems' },
+          { label: 'Based', value: 'Norrköping, Sweden' },
+        ].map(({ label, value }) => (
+          <div class="rounded-[20px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-5 space-y-1">
+            <p class="text-xs uppercase tracking-[0.3em] text-muted m-0">{label}</p>
+            <p class="font-semibold text-ink m-0">{value}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
 </PageLayout>

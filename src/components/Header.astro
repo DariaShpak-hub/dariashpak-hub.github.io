@@ -3,7 +3,6 @@ import { getSite } from "../utils/consts";
 import HeaderLink from "./HeaderLink.astro";
 
 const site = await getSite();
-import SearchModal from "./SearchModal.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 import { Icon } from "astro-icon/components";
 const subpath = import.meta.env.BASE_URL;
@@ -22,9 +21,9 @@ const subpath = import.meta.env.BASE_URL;
         >
           <a href={subpath} aria-label={site.title}>
             <Icon
-              name="tabler:rocket"
-              size="2em"
-              class="inline-block mr-3 align-middle"
+              name="tabler:pencil"
+              size="1.6em"
+              class="inline-block mr-2 align-middle"
               aria-hidden="true"
             />
             <span class="hidden md:inline">{site.title}</span>
@@ -34,10 +33,10 @@ const subpath = import.meta.env.BASE_URL;
       <nav
         class="hidden md:flex items-center gap-2 md:gap-3 overflow-x-auto overflow-y-visible pt-1 pb-0.5 text-[0.72rem] tracking-[0.24em] uppercase text-muted [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [--tw-pan-y:none] [&::-webkit-scrollbar]:hidden col-span-2 md:col-auto md:justify-self-center [html[data-nav='open']_&]:flex [html[data-nav='open']_&]:flex-col [html[data-nav='open']_&]:items-start [html[data-nav='open']_&]:gap-2 [html[data-nav='open']_&]:py-4 [html[data-nav='open']_&]:w-full [html[data-nav='open']_&]:col-span-2 [html[data-nav='open']_&]:justify-self-stretch"
       >
-        <HeaderLink href="/blog">Blog</HeaderLink>
-        <HeaderLink href="/team">Team</HeaderLink>
-        <HeaderLink href="/about">About</HeaderLink>
+        <HeaderLink href="/">Home</HeaderLink>
         <HeaderLink href="/projects">Projects</HeaderLink>
+        <HeaderLink href="/resume">Resume</HeaderLink>
+        <HeaderLink href="/contact">Contact</HeaderLink>
       </nav>
       <div class="flex items-center gap-2 md:gap-3 shrink-0 justify-end">
         <button
@@ -60,25 +59,6 @@ const subpath = import.meta.env.BASE_URL;
             <Icon name="tabler:x" size={18} stroke-width={1.6} />
           </span>
           <span class="sr-only">Toggle navigation</span>
-        </button>
-        <SearchModal />
-        <a
-          class="header-button"
-          href="https://github.com/roicort/launchpad"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visit the GitHub repository"
-        >
-          <Icon name="tabler:brand-github" size={18} stroke-width={1.6} />
-        </a>
-        <button
-          class="header-button"
-          type="button"
-          id="debug-toggle"
-          aria-label="Toggle debug borders"
-          aria-pressed="false"
-        >
-          <Icon name="tabler:bug" size={18} stroke-width={1.6} />
         </button>
         <ThemeToggle />
       </div>

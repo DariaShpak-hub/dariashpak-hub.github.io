@@ -7,12 +7,15 @@
 	--content-columns: 18;
 	--grid-cell: calc(100vw / var(--grid-divisions));
 	--content-width: calc(var(--grid-cell) * var(--content-columns));
-	
+
 	--color-ink: #050505;
 	--color-muted: color-mix(in oklab, var(--color-ink) 75%, transparent);
 	--color-paper: #f9f9f9;
 	--color-surface: #ffffff;
 	--color-border: color-mix(in oklab, var(--color-ink) 14%, transparent);
+	--color-accent: #d6303a;
+
+	--font-serif: 'Playfair Display', Georgia, serif;
 }
 
 @layer base {
@@ -24,6 +27,7 @@
 		--color-surface: #ffffff;
 		--color-border: color-mix(in oklab, var(--color-ink) 14%, transparent);
 		--grid-line: color-mix(in oklab, var(--color-ink) 10%, transparent);
+		--color-accent: #d6303a;
 	}
 
 	:root[data-theme="dark"] {
@@ -34,19 +38,11 @@
 		--color-surface: #131318;
 		--color-border: color-mix(in oklab, var(--color-ink) 16%, transparent);
 		--grid-line: color-mix(in oklab, var(--color-ink) 10%, transparent);
+		--color-accent: #d6303a;
 	}
 
-	:root[data-theme="blue"] {
-		color-scheme: light;
-		--color-ink: #84cdfa;
-		--color-muted: color-mix(in oklab, var(--color-ink) 75%, transparent);
-		--color-paper: #0f1b3f;
-		--color-surface: #0f1b3f;
-		--color-border: color-mix(in oklab, var(--color-ink) 18%, transparent);
-		--grid-line: color-mix(in oklab, var(--color-ink) 12%, transparent);
-	}
 
-	*,
+*,
 	*::before,
 	*::after {
 		box-sizing: border-box;
@@ -105,8 +101,22 @@
 
 @layer components {
 
- 	.text-muted {
+	.text-muted {
 		color: var(--color-muted);
+	}
+
+	.text-accent {
+		color: var(--color-accent);
+	}
+
+	.font-serif {
+		font-family: var(--font-serif);
+	}
+
+	.serif-highlight {
+		font-family: var(--font-serif);
+		font-style: italic;
+		color: var(--color-accent);
 	}
 
 	.text-subtle {

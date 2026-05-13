@@ -22,12 +22,12 @@ const iconMap: Record<string, string> = {
   <div class="content-shell">
     <div class="grid gap-10 border-b border-[color:var(--color-border)] pb-10 md:grid-cols-2">
       <div class="space-y-6">
-        <p class="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">Resources</p>
+        <p class="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">Navigation</p>
         <div class="grid gap-2 sm:grid-cols-2 text-sm text-ink">
-          <a class="transition-colors hover:text-ink" href="https://astro.build" target="_blank">Astro Docs</a>
-          <a class="transition-colors hover:text-ink" href="https://docs.astro.build/en/guides/content-collections/" target="_blank">Content collections</a>
-          <a class="transition-colors hover:text-ink" href="https://tailwindcss.com/docs" target="_blank">Tailwind docs</a>
-          <a class="transition-colors hover:text-ink" href="https://github.com/withastro/astro" target="_blank">Astro GitHub</a>
+          <a class="transition-colors hover:text-ink" href="/">Home</a>
+          <a class="transition-colors hover:text-ink" href="/projects">Projects</a>
+          <a class="transition-colors hover:text-ink" href="/about">About</a>
+          <a class="transition-colors hover:text-ink" href="mailto:dpolaroid@gmail.com">Contact</a>
         </div>
       </div>
       <div class="grid gap-8">
@@ -61,19 +61,10 @@ const iconMap: Record<string, string> = {
             })}
           </div>
         </div>
-        <div class="grid gap-3">
-          <p class="text-3xl sm:text-4xl font-semibold tracking-tight text-ink">Navigation</p>
-          <div class="grid gap-2 sm:grid-cols-2 text-sm text-ink">
-            <a class="transition-colors hover:text-ink" href="/">Home</a>
-            <a class="transition-colors hover:text-ink" href="/blog">Blog</a>
-            <a class="transition-colors hover:text-ink" href="/about">About</a>
-            <a class="transition-colors hover:text-ink" href="/rss.xml">RSS</a>
-          </div>
-        </div>
       </div>
     </div>
     <div class="grid gap-6 pt-8 pb-4 md:flex md:items-center md:justify-between">
-      <p class="text-sm text-ink m-0"> {site.title} &copy; <a href="https://github.com/roicort/launchpad" class="underline text-muted hover:text-ink">Astro Launchpad</a> {today.getFullYear()}. All rights reserved. </p>
+      <p class="text-sm text-ink m-0"> {site.title} &copy; {today.getFullYear()}. All rights reserved.</p>
       <div class="md:text-right space-y-2 md:space-y-1">
         <div class="flex flex-wrap items-center gap-3 md:justify-end">
           <p class="text-2xl sm:text-3xl font-semibold tracking-tight text-ink m-0">{site.based}</p>

@@ -1,6 +1,8 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import ProjectPost from '../../layouts/ProjectPost.astro';
+import { readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -14,7 +16,22 @@ type Props = CollectionEntry<'projects'>;
 
 const project = Astro.props as Props;
 const { Content } = await render(project);
+
+// Read gallery images from public folder at build time
+let gallery: string[] = [];
+if (project.data.galleryFolder) {
+	const folder = project.data.galleryFolder;
+	const publicDir = join(process.cwd(), 'public', 'Projects', folder);
+	try {
+		const files = await readdir(publicDir);
+		gallery = files
+			.filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f))
+			.map((f) => `/Projects/${folder}/${f}`);
+	} catch {
+		// folder not found, skip
+	}
+}
 ---
-<ProjectPost {...project.data}>
+<ProjectPost {...project.data} gallery={gallery}>
 	<Content />
 </ProjectPost>

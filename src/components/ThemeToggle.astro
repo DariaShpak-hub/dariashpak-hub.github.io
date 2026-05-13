@@ -9,7 +9,7 @@
 	aria-label="Toggle theme"
 >
 	<span class="sr-only">Toggle theme</span>
-	<span class="theme-toggle__icon inline-flex [html[data-theme='dark']_&]:hidden [html[data-theme='blue']_&]:hidden" aria-hidden="true">
+	<span class="theme-toggle__icon inline-flex [html[data-theme='dark']_&]:hidden" aria-hidden="true">
 		<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
 			<circle cx="12" cy="12" r="4" />
 			<path d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.95 6.95-1.414-1.414M7.464 7.464 6.05 6.05m0 11.9 1.414-1.414M18.364 5.636l-1.414 1.414" />
@@ -20,22 +20,16 @@
 			<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z" />
 		</svg>
 	</span>
-	<span class="theme-toggle__icon hidden [html[data-theme='blue']_&]:inline-flex" aria-hidden="true">
-		<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-			<rect x="5" y="5" width="14" height="14" rx="3" />
-			<path d="M9 9h6v6H9z" />
-		</svg>
-	</span>
 </button>
 
 <script is:inline>
 const STORAGE_KEY = 'theme';
-const THEMES = ['light', 'dark', 'blue'];
+const THEMES = ['light', 'dark'];
 
 const getPreferredTheme = () => {
 	const stored = localStorage.getItem(STORAGE_KEY);
 	if (THEMES.includes(stored ?? '')) return stored;
-	return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	return 'dark';
 };
 
 const applyTheme = (theme) => {

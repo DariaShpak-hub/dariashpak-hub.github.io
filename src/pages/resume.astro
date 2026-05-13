@@ -1,0 +1,219 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout title="Resume — Daria Shpak" description="Senior Graphic Designer & Communicator — Publications, Visual Communication, Digital Content.">
+  <section class="content-shell py-12 space-y-12">
+
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+      <div class="space-y-1">
+        <p class="eyebrow m-0">Resume</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-ink m-0 leading-tight">
+          Daria <span class="font-serif font-normal italic text-accent">Shpak</span>
+        </h1>
+        <p class="text-muted mt-2 m-0">Senior Graphic Designer &amp; Communicator · Norrköping, Sweden</p>
+        <div class="flex flex-wrap gap-4 mt-3 text-sm text-muted">
+          <a href="tel:+46720310173" class="hover:text-accent transition-colors">+4672-031-0173</a>
+          <a href="mailto:daria.shpak92@gmail.com" class="hover:text-accent transition-colors">daria.shpak92@gmail.com</a>
+        </div>
+      </div>
+      <a
+        href="/Daria_Shpak_Resume.pdf"
+        download
+        class="button primary shrink-0 self-start sm:self-auto"
+      >
+        Download PDF
+      </a>
+    </div>
+
+    <div class="grid md:grid-cols-[1fr_320px] gap-10 max-w-5xl">
+
+      <!-- Left column -->
+      <div class="space-y-10">
+
+        <!-- Summary -->
+        <div class="rounded-[20px] border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6 space-y-3">
+          <p class="text-ink m-0">
+            Communicator with <span class="serif-highlight">10 years of experience</span> in digital communication and content production within academic and international contexts.
+          </p>
+          <p class="text-muted m-0">
+            Experienced in working strategically and operationally throughout the communication process — from audience analysis and planning to production, publishing, and follow-up. Combines academic training in <span class="serif-highlight">Psychology</span> and <span class="serif-highlight">Visual Communication</span> to develop structured, accessible communication tailored to international target groups.
+          </p>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="space-y-6">
+          <h2 class="text-2xl font-bold text-ink m-0">
+            Work <span class="font-serif font-normal italic text-accent">Experience</span>
+          </h2>
+
+          <div class="space-y-8">
+            <div class="space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                <h3 class="font-semibold text-ink m-0">Senior Graphic Designer &amp; Communicator</h3>
+                <span class="text-sm text-muted shrink-0">Jan 2024 – Present · telbix.com</span>
+              </div>
+              <p class="text-muted text-sm m-0">Responsible for producing and publishing digital content across web and social platforms.</p>
+              <ul class="space-y-1 m-0 pl-4 list-disc text-sm text-muted">
+                <li>Structure and adapt content for different target groups</li>
+                <li>Develop communication materials aligned with brand guidelines</li>
+                <li>Work with <span class="serif-highlight">SEO-informed content structure</span></li>
+                <li>Monitor engagement and adjust communication where appropriate</li>
+                <li>Maintain consistency across digital channels</li>
+              </ul>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                <h3 class="font-semibold text-ink m-0">Senior Graphic Designer</h3>
+                <span class="text-sm text-muted shrink-0">2021 – 2024 · Amazon, E-commerce</span>
+              </div>
+              <p class="text-muted text-sm m-0">Worked with full-cycle digital communication initiatives for international audiences.</p>
+              <ul class="space-y-1 m-0 pl-4 list-disc text-sm text-muted">
+                <li>Conducted target group analysis to support communication planning</li>
+                <li>Produced structured content for <span class="serif-highlight">web, campaigns, and social platforms</span></li>
+                <li>Developed communication strategies aligned with audience needs</li>
+                <li>Evaluated results and refined communication approaches</li>
+                <li>Ensured visual and tonal consistency across channels</li>
+              </ul>
+            </div>
+
+            <div class="space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1">
+                <h3 class="font-semibold text-ink m-0">Graphic Designer</h3>
+                <span class="text-sm text-muted shrink-0">2019 – 2021 · Colozoo</span>
+              </div>
+              <ul class="space-y-1 m-0 pl-4 list-disc text-sm text-muted">
+                <li>Produced digital and printed communication materials</li>
+                <li>Structured informational content for online platforms</li>
+                <li>Maintained consistent visual identity across campaigns</li>
+                <li>Collaborated with internal teams to ensure clarity and alignment</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Selected Projects -->
+        <div class="space-y-6">
+          <h2 class="text-2xl font-bold text-ink m-0">
+            Selected <span class="font-serif font-normal italic text-accent">Projects</span>
+          </h2>
+
+          <div class="space-y-6">
+            {[
+              {
+                name: 'EDGE Project (ERASMUS+)',
+                items: [
+                  'Managed full editorial production of research publication',
+                  'Structured long-format academic content for clarity and accessibility',
+                  'Delivered print-ready and digital materials within institutional frameworks',
+                ],
+              },
+              {
+                name: 'Research Catalogue (Academic Platform)',
+                items: [
+                  'Structured complex research content for digital presentation',
+                  'Applied principles of information hierarchy and usability',
+                  'Developed a coherent communication framework for academic dissemination',
+                ],
+              },
+              {
+                name: 'Rocket Project (ERASMUS+)',
+                items: [
+                  'Developed visual identity and communication materials for international collaboration',
+                  'Designed structured templates and conference materials',
+                  'Coordinated branding across institutional partners',
+                ],
+              },
+              {
+                name: 'Uppsala University — Transformative Game Design',
+                items: [
+                  'Produced academic publications aligned with university standards',
+                  'Designed book covers and structured layouts for master\'s programme materials',
+                  'Collaborated closely with academic stakeholders throughout the process',
+                ],
+              },
+            ].map(({ name, items }) => (
+              <div class="space-y-2">
+                <h3 class="font-semibold text-ink m-0 text-sm">{name}</h3>
+                <ul class="space-y-1 m-0 pl-4 list-disc text-sm text-muted">
+                  {items.map((item) => <li>{item}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column -->
+      <div class="space-y-8">
+
+        <!-- Key Skills -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold text-ink m-0">
+            Key <span class="font-serif font-normal italic text-accent">Skills</span>
+          </h2>
+          <ul class="space-y-2 m-0 list-none p-0">
+            {[
+              'Editorial production of reports, publications, and digital content',
+              'Development and structuring of long-format communication materials',
+              'Audience-adapted visual and textual communication',
+              'Content production within established graphic profiles',
+              'Web publishing and content management (WordPress)',
+              'Social media content creation and platform adaptation',
+              'Basic video production and visual storytelling',
+              'Cross-team collaboration in academic and institutional settings',
+            ].map((skill) => (
+              <li class="flex items-start gap-2 text-sm text-muted">
+                <span class="text-accent mt-0.5 shrink-0">—</span>
+                <span>{skill}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Education -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold text-ink m-0">
+            <span class="font-serif font-normal italic text-accent">Education</span>
+          </h2>
+          <div class="space-y-4">
+            <div>
+              <p class="font-semibold text-ink text-sm m-0">Bachelor's Degree in Game Design &amp; Graphics</p>
+              <p class="text-muted text-sm m-0">Uppsala University</p>
+            </div>
+            <div>
+              <p class="font-semibold text-ink text-sm m-0">Bachelor's Degree in Psychology</p>
+              <p class="text-muted text-sm m-0">Kyiv International University</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tools -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold text-ink m-0">Tools</h2>
+          <ul class="space-y-1 m-0 list-none p-0">
+            {['WordPress', 'Wix', 'Squarespace', 'Adobe InDesign', 'Adobe Photoshop', 'Adobe Illustrator', 'Figma', 'Microsoft Office'].map((tool) => (
+              <li class="flex items-center gap-2 text-sm text-muted">
+                <span class="text-accent shrink-0">—</span>
+                <span>{tool}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Languages -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold text-ink m-0">Languages</h2>
+          <ul class="space-y-1 m-0 list-none p-0">
+            <li class="text-sm text-muted"><span class="serif-highlight">English</span> — Fluent (professional proficiency)</li>
+            <li class="text-sm text-muted"><span class="serif-highlight">Swedish</span> — Professional working proficiency</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+</PageLayout>
