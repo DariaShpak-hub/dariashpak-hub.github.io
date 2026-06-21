@@ -1,7 +1,7 @@
 ---
 title: MUD in the Machine
 description: Visual identity and catalogue design for an artistic research project by Josephine Rydberg, Stockholm University of the Arts.
-pubDate: 2026-05-01
+pubDate: 2026-06-01
 heroImage: ../../assets/projects/mud-in-the-machine.png
 galleryFolder: "mud-in-the-machine"
 tags: ["Academia", "Visual Identity", "Print"]

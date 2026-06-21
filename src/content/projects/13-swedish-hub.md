@@ -1,7 +1,7 @@
 ---
 title: Swedish Hub
 description: Digital identity and structured content system for a volunteer organisation supporting Ukrainian refugees in Sweden.
-pubDate: 2024-09-01
+pubDate: 2026-05-24
 heroImage: ../../assets/projects/swedish-hub.png
 galleryFolder: "swedish-hub"
 tags: ["Volunteering", "Visual Identity", "Social Media"]

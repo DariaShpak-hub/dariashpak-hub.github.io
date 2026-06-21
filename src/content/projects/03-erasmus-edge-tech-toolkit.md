@@ -1,7 +1,7 @@
 ---
 title: Erasmus+ EDGE Tech Toolkit
 description: Complete editorial design — cover and full interior layout — for the Games & Society Lab publication.
-pubDate: 2024-01-01
+pubDate: 2026-05-21
 heroImage: ../../assets/projects/erasmus+edge.png
 galleryFolder: "erasmus+edge-tech-toolkit"
 tags: ["Academia", "Editorial Design", "Print"]

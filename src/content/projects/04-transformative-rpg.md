@@ -1,7 +1,7 @@
 ---
 title: Transformative Role-Playing Game Design
 description: Book cover and interior layout for a research publication on transformative game design, published by Uppsala University.
-pubDate: 2023-09-01
+pubDate: 2026-05-20
 heroImage: ../../assets/projects/transformative-rpg.png
 galleryFolder: "transformative-rpg-design"
 tags: ["Academia", "Editorial Design", "Book Design"]

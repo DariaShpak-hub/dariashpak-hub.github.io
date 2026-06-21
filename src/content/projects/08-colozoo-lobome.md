@@ -1,7 +1,7 @@
 ---
 title: Colozoo & Lobome
 description: Packaging and marketing design for art and stationery products sold on competitive digital marketplaces.
-pubDate: 2022-08-01
+pubDate: 2026-05-27
 heroImage: ../../assets/projects/colozoo-and-lobome.png
 galleryFolder: "colozoo&lobome"
 tags: ["Commerce", "Packaging", "Product Design"]

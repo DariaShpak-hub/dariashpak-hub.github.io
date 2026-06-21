@@ -1,7 +1,7 @@
 ---
 title: Percepto
 description: Visual communication for a technology hardware product — website visuals, product assets, and marketing imagery.
-pubDate: 2021-10-01
+pubDate: 2026-05-28
 heroImage: ../../assets/projects/percepto.png
 galleryFolder: "percepto"
 tags: ["Commerce", "Web Design", "Product Photography"]

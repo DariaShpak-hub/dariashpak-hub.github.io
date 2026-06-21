@@ -1,7 +1,7 @@
 ---
 title: ROCKET Project
 description: Visual identity system for an international Erasmus+ collaboration spanning four European universities.
-pubDate: 2024-06-01
+pubDate: 2026-05-23
 heroImage: ../../assets/projects/rocket.png
 galleryFolder: "rocket"
 tags: ["Academia", "Brand Identity", "Visual Identity"]

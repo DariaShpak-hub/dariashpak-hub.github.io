@@ -1,7 +1,7 @@
 ---
 title: Social Media Educational Campaign
 description: Modular content system for an educational feminist social media account — designed for clarity in mobile-first environments.
-pubDate: 2021-06-01
+pubDate: 2026-05-25
 heroImage: ../../assets/projects/sm-edu.png
 galleryFolder: "sm-edu-campaign"
 tags: ["Personal", "Social Media", "Content Design"]

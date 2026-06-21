@@ -1,7 +1,7 @@
 ---
 title: Prepr
 description: Web and interface design for a conversion-centric CMS platform for digital agencies.
-pubDate: 2023-03-01
+pubDate: 2026-05-30
 heroImage: ../../assets/projects/prepr.png
 galleryFolder: "prepr"
 tags: ["Commerce", "Web Design", "UI Design"]

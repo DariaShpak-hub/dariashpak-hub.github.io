@@ -1,7 +1,7 @@
 ---
 title: Evocative Games
 description: Digital visual system for research communication within game studies at Uppsala University.
-pubDate: 2024-03-01
+pubDate: 2026-05-22
 heroImage: ../../assets/projects/evocative-games.png
 galleryFolder: "evocative-games"
 tags: ["Academia", "Visual System", "Digital Design"]

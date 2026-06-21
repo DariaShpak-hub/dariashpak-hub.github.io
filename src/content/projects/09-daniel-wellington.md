@@ -1,7 +1,7 @@
 ---
 title: Daniel Wellington
 description: Conceptual advertising campaign focused on minimal luxury positioning and high-end product storytelling.
-pubDate: 2022-05-01
+pubDate: 2026-05-26
 heroImage: ../../assets/projects/daniel-wellington.png
 galleryFolder: "daniel-wellington"
 tags: ["Commerce", "Campaign", "Art Direction"]

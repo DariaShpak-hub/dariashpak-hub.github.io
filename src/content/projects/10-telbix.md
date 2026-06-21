@@ -1,7 +1,7 @@
 ---
 title: Telbix
 description: Lifestyle visualisation and promotional materials for interior lighting products, designed for catalogue-level presentation.
-pubDate: 2022-02-01
+pubDate: 2026-05-29
 heroImage: ../../assets/projects/telbix.png
 galleryFolder: "telbix"
 tags: ["Commerce", "3D Visualisation", "Product Design"]
