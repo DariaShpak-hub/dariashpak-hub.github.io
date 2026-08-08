@@ -8,49 +8,49 @@ The two surviving dimensionless quantities of this investigation measure
 apparently different things:
 
     lambda   -- volume entropy, lim (1/k) ln|B_k|, the growth rate of
-                accessible state space. A property of how the grammar
+                accessible state space. A property of how the rule set
                 expands.
     gradient -- the static entropic ordering: g(M), its correlation with
                 ln Omega(M), and the exact entropy gap Delta S_B. A property
                 of how multiplicity is distributed.
 
 If expansion and thermodynamic ordering are one phenomenon, as an
-entropic-cosmology reading would need, these should covary across grammars.
+entropic-cosmology reading would need, these should covary across rule sets.
 If they are independent knobs, they should not.
 
 Method
 ------
-Every non-empty subset of the five available rules is a grammar. For each,
+Every non-empty subset of the five available rules is a rule set. For each,
 the depth-k ball around a fixed seed is enumerated under a common state cap,
 and both observables are measured *on that same truncated ball* so the
 truncation enters both consistently. Only edges internal to the ball are used
 for the gradient, since Omega is undefined for targets outside it.
 
-Truncation is the main caveat: for grammars with unbounded state spaces the
+Truncation is the main caveat: for rule sets with unbounded state spaces the
 ball is not the whole system, and the exact "global gradient sums to zero"
 identity holds only up to boundary terms.
 
 Result: the question is not answerable with this rule set
 ---------------------------------------------------------
 Enumerating to a fixed depth gives corr(lambda, entropy gap) = +0.98, but the
-correlation is spurious. At fixed depth a faster-growing grammar mechanically
+correlation is spurious. At fixed depth a faster-growing rule set mechanically
 reaches more states, so corr(lambda, ln N) = +0.989, and the entropy gap is
 known independently to scale as ~0.67 ln N. Controlling for ln N drops the
 partial correlation to -0.23, and with collinearity that high the partial is
 itself unstable.
 
-Re-running at matched state count does not rescue it. The eight grammars that
+Re-running at matched state count does not rescue it. The eight rule sets that
 reach N ~ 1000 fall into two clusters, the correlation changes sign
 (r = -0.93 with Spearman only -0.37, so it is not monotone), and within the
 cluster that actually varies in lambda (0.507 to 0.593, a 17% spread) the gap
 is flat to 0.6%. Several entries are also exact duplicates -- adding 'smooth'
-to a grammar containing 'contract' changes nothing -- so the effective sample
+to a rule set containing 'contract' changes nothing -- so the effective sample
 is around five, not nineteen.
 
 The flat gap across an appreciable lambda range is weak evidence that the two
 observables are independent, consistent with the earlier structural finding
 that entropy production and volume growth are separately dialable. But it is
-weak. Settling this needs a family of genuinely distinct grammars large
+weak. Settling this needs a family of genuinely distinct rule sets large
 enough to break the lambda-N collinearity, which five rules cannot supply.
 """
 
@@ -184,7 +184,7 @@ def main(argv=None):
     rows = []
 
     print("%-26s %6s %7s %8s %8s %8s %8s" % (
-        "grammar", "N", "lambda", "gap", "g_seed", "corr_g", "mean|g|"))
+        "ruleset", "N", "lambda", "gap", "g_seed", "corr_g", "mean|g|"))
 
     for size in range(1, len(ALL_RULES) + 1):
         for combo in combinations(ALL_RULES, size):
@@ -202,7 +202,7 @@ def main(argv=None):
 
     print()
     lam = [r[0] for r in rows]
-    print("across %d grammars, correlation of lambda with:" % len(rows))
+    print("across %d rule sets, correlation of lambda with:" % len(rows))
     for key, tag in (("gap", "entropy gap dS_B"),
                      ("g_seed", "gradient at seed"),
                      ("corr_g", "corr(g, lnOmega)"),

@@ -33,10 +33,10 @@ import sys, math
 sys.path.insert(0, "/home/user/dariashpak-hub.github.io")
 from collections import defaultdict
 from rewrite_lab import continuation_graph, path_seed
-from rewrite_research import GRAMMARS
+from rewrite_research import RULE_SETS
 from entropic_order import macrostates, entropy_gap
 
-rules = GRAMMARS["G1-reversible"]["rules"]
+rules = RULE_SETS["G1-reversible"]["rules"]
 
 def slope(xs, ys):
     n = len(xs); mx = sum(xs)/n; my = sum(ys)/n

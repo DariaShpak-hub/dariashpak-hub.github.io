@@ -2,7 +2,7 @@
 """
 rewrite_lab.py
 
-Framework for exploring local rewrite grammars on finite unlabeled hypergraphs.
+Framework for exploring local rewrite rule sets on finite unlabeled hypergraphs.
 
 This is a research scaffold rather than a finished physics model.
 You provide one or more rewrite rules and the program enumerates the

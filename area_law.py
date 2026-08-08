@@ -25,9 +25,9 @@ a volume law is s = 1 (boundary proportional to bulk) while an area law in
 dimension d is s = (d-1)/d, which inverts to d = 1/(1-s). The area relation
 and the dimension are the same data, so one cannot replace the other.
 
-Measured: the polynomially growing grammars do obey an area law, s = 0.69 to
-0.84 rising with seed valence, while the exponentially growing grammar gives
-s = 1.04, a volume law with d = infinity. The grammar whose accessible volume
+Measured: the polynomially growing rule sets do obey an area law, s = 0.69 to
+0.84 rising with seed valence, while the exponentially growing rule set gives
+s = 1.04, a volume law with d = infinity. The rule set whose accessible volume
 expands exponentially is therefore precisely the one with no area law. Note
 the two dimension estimates (from volume growth, and from 1/(1-s)) disagree
 at these depths, so the scaling is not yet asymptotic.
@@ -35,7 +35,7 @@ at these depths, so the scaling is not yet asymptotic.
 import sys, math
 sys.path.insert(0, "/home/user/dariashpak-hub.github.io")
 from expansion import ball_volumes, SUBDIVIDE, SMOOTH, star
-from rewrite_research import COMPOSE, DECOMPOSE, GRAMMARS
+from rewrite_research import COMPOSE, DECOMPOSE, RULE_SETS
 from rewrite_lab import path_seed
 
 
@@ -79,4 +79,4 @@ print()
 analyse("path(2) compose+decompose+subdivide", path_seed(2),
         [COMPOSE, DECOMPOSE, SUBDIVIDE], 12)
 analyse("path(6) G1 (finite, saturates)", path_seed(6),
-        GRAMMARS["G1-reversible"]["rules"], 10)
+        RULE_SETS["G1-reversible"]["rules"], 10)

@@ -5,7 +5,7 @@ rewrite_thermo.py
 Boltzmann entropy and entropy-production rate for motif coarse-grainings of
 a continuation graph.
 
-Two quantities, with very different status on a reversible grammar:
+Two quantities, with very different status on a reversible rule set:
 
 Boltzmann entropy
     S_B(M) = ln Omega(M), where Omega(M) is the number of microstates
@@ -16,7 +16,7 @@ Entropy production rate
     sigma = 1/2 sum_{u,v} [pi(u)P(u,v) - pi(v)P(v,u)]
                           * ln[ pi(u)P(u,v) / (pi(v)P(v,u)) ]
 
-    On a grammar whose rules are mutually inverse the continuation graph is
+    On a rule set whose rules are mutually inverse the continuation graph is
     symmetric, the chain satisfies detailed balance, and sigma = 0 exactly.
     Coarse-graining cannot rescue this. For any partition into blocks A, B,
     pi-weighted lumping gives
@@ -30,8 +30,8 @@ Entropy production rate
     coarse entropy production. (The converse is the familiar one: coarse-
     graining an irreversible chain *under*-estimates its true production.)
 
-Meaningful entropy production therefore requires a grammar that breaks
-detailed balance. The --grammar flag runs the mixed grammar for contrast,
+Meaningful entropy production therefore requires a rule set that breaks
+detailed balance. The --rules flag runs the mixed rule set for contrast,
 where the chain is absorbing and the relevant object is the quasi-stationary
 distribution rather than the stationary one.
 """
@@ -42,7 +42,7 @@ import math
 from collections import defaultdict
 
 from rewrite_lab import Hypergraph, continuation_graph, path_seed
-from rewrite_research import GRAMMARS
+from rewrite_research import RULE_SETS
 
 # ---------- Motif coarse-grainings -------------------------------------
 
@@ -546,7 +546,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
     ap.add_argument("--paths", type=int, nargs="+", default=[4, 5, 6],
                     metavar="N", help="path seeds (default: 4 5 6 -> 7/16/41)")
-    ap.add_argument("--grammar", choices=sorted(GRAMMARS),
+    ap.add_argument("--rules", choices=sorted(RULE_SETS),
                     default="G1-reversible")
     ap.add_argument("--coarse", nargs="+", default=["arity", "degseq",
                                                     "wl1", "wl2", "trivial"],
@@ -567,9 +567,9 @@ def main(argv=None):
                     help="scan the arrow over size x coarse-graining resolution")
     args = ap.parse_args(argv)
 
-    rules = GRAMMARS[args.grammar]["rules"]
+    rules = RULE_SETS[args.rules]["rules"]
     print("=" * 72)
-    print(f"grammar = {args.grammar}"
+    print(f"rule set = {args.rules}"
           + ("   [relaxation from prepared low-entropy state]"
              if args.relax else ""))
     print("=" * 72)

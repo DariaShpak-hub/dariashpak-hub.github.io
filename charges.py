@@ -2,23 +2,23 @@
 """
 charges.py
 
-Conserved quantities of a rewrite grammar, i.e. its superselection sectors.
+Conserved quantities of a rewrite rule set, i.e. its superselection sectors.
 
 Motivation
 ----------
 Asking whether a field could be a collective state of the relational network
 is not directly testable here -- an electromagnetic field needs orientation,
 and unordered hyperedges cannot carry a sign. But fields come with conserved
-charges, and whether a grammar has conserved quantities *is* decidable.
+charges, and whether a rule set has conserved quantities *is* decidable.
 
 A conserved quantity is exactly a function constant on connected components
 of the continuation graph. So enumerate hypergraphs up to a size bound, take
-their orbits under the grammar, and ask whether the obvious invariants
+their orbits under the rule set, and ask whether the obvious invariants
 already separate the components:
 
     node count, weight = sum(|e| - 1), edge count
 
-If they do, the grammar has no charges beyond the bookkeeping ones. If two
+If they do, the rule set has no charges beyond the bookkeeping ones. If two
 components agree on all of them, some further invariant distinguishes them,
 and that invariant is a candidate charge -- something conserved by the local
 rules that is not a trivial count.
@@ -27,7 +27,7 @@ This is the honest, in-scope version of the question. It says nothing about
 electromagnetism; it asks only whether the dynamics conserves anything
 non-obvious.
 
-The window must be closed under the grammar
+The window must be closed under the rule set
 -------------------------------------------
 Enumerating "all hypergraphs with at most E edges" is not valid here: a rule
 that leaves the window has its transition silently dropped, which splits
@@ -99,7 +99,7 @@ def all_hypergraphs(n_nodes, max_edges, sizes=(2, 3)):
 
 
 def components(states, rules):
-    """Union-find over the grammar's transitions, restricted to `states`."""
+    """Union-find over the rule set's transitions, restricted to `states`."""
     parent = {c: c for c in states}
 
     def find(x):
@@ -158,7 +158,7 @@ def analyse(name, rules, n_nodes, max_edges):
     print(f"  conserved among (nodes, weight, edges): "
           f"{conserved if conserved else 'none'}")
     if not conserved:
-        print("  -> no superselection structure: the grammar connects "
+        print("  -> no superselection structure: the rule set connects "
               "everything it can reach")
     print(f"  invariant-classes containing >1 component: {len(degenerate)}")
     if degenerate:

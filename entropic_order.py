@@ -9,7 +9,7 @@ Why this module exists
 The relaxation experiments in rewrite_thermo.py measure <Delta S_B> per step
 of a Markov chain. That imports a background time parameter the rewrite
 system does not itself provide: the step counter t is added structure, not
-something the grammar supplies. If thermodynamic ordering is to be primitive
+something the rule set supplies. If thermodynamic ordering is to be primitive
 rather than derived from time, it must be definable on the static
 continuation graph.
 
@@ -31,7 +31,7 @@ Two facts then hold, and together they are the whole content of the arrow:
 
 1. Summed over all directed edges, the entropy difference is exactly zero on
    a symmetric graph, since every edge is counted once in each direction.
-   There is no global orientation. The grammar has no preferred direction.
+   There is no global orientation. The rule set has no preferred direction.
 
 2. Conditioned on a macrostate, g(M) is strongly negative in ln Omega(M):
    from a low-multiplicity macrostate almost every rewrite leads to a
@@ -50,7 +50,7 @@ import math
 from collections import defaultdict
 
 from rewrite_lab import continuation_graph, path_seed
-from rewrite_research import GRAMMARS
+from rewrite_research import RULE_SETS
 from rewrite_thermo import COARSE
 
 
@@ -169,15 +169,15 @@ def entropy_gap(states, graph, cg_name, seed):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
     ap.add_argument("--paths", type=int, nargs="+", default=[4, 5, 6, 7, 8, 9])
-    ap.add_argument("--grammar", choices=sorted(GRAMMARS),
+    ap.add_argument("--rules", choices=sorted(RULE_SETS),
                     default="G1-reversible")
     ap.add_argument("--coarse", nargs="+", default=["degseq"],
                     choices=sorted(COARSE))
     args = ap.parse_args(argv)
 
-    rules = GRAMMARS[args.grammar]["rules"]
+    rules = RULE_SETS[args.rules]["rules"]
     print("=" * 72)
-    print(f"grammar = {args.grammar}   (static -- no time parameter)")
+    print(f"rule set = {args.rules}   (static -- no time parameter)")
     print("=" * 72)
     print()
 

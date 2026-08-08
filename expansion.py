@@ -16,9 +16,9 @@ accelerates.
 
 Two obstructions, both computable rather than philosophical
 -----------------------------------------------------------
-1. Finiteness. The continuation graph of a weight-conserving grammar is a
+1. Finiteness. The continuation graph of a weight-conserving rule set is a
    fixed finite set, so |B_k| rises and then saturates. Saturating growth
-   decelerates by construction: no such grammar can produce sustained
+   decelerates by construction: no such rule set can produce sustained
    expansion, whatever observable is read off it. Expansion requires rules
    that create nodes.
 
@@ -26,7 +26,7 @@ Two obstructions, both computable rather than philosophical
    with respect to a time coordinate, and that sign is not invariant. For
    any monotone reclocking k -> tau(k) the sign of d^2 a / d tau^2 can be
    changed at will. Rewrite depth is a choice of clock, not a fact about the
-   grammar, so a positive result under it means nothing until the clock is
+   rule set, so a positive result under it means nothing until the clock is
    itself derived from the system. This module measures the same expansion
    under two clocks -- rewrite depth, and an entropic clock tau = ln|B_k| --
    to show the sign of the acceleration is a property of the choice.
@@ -36,7 +36,7 @@ import argparse
 import math
 
 from rewrite_lab import Hypergraph, Rule, continuation_graph, path_seed
-from rewrite_research import COMPOSE, DECOMPOSE, GRAMMARS
+from rewrite_research import COMPOSE, DECOMPOSE, RULE_SETS
 
 
 def subdivide_edge(H):
@@ -222,7 +222,7 @@ def main(argv=None):
 
     seed = path_seed(args.path)
     report("G1 (compose+decompose): weight-conserving, finite",
-           seed, GRAMMARS["G1-reversible"]["rules"], args.depth)
+           seed, RULE_SETS["G1-reversible"]["rules"], args.depth)
     report("G1 + subdivide: node-creating, unbounded",
            path_seed(2), [COMPOSE, DECOMPOSE, SUBDIVIDE], args.depth)
     report("subdivide only: node-creating, no reversible sector",

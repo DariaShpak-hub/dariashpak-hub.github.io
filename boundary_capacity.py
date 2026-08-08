@@ -22,7 +22,7 @@ crossing-edge count peaks at r = n/2 and falls away, so S(boundary) shrinks
 exactly where S(bulk|boundary) grows, and the ratio crosses 1. There is no
 region size at which the boundary could carry the interior.
 
-This is why the result is not a defect of one grammar. Classical
+This is why the result is not a defect of one rule set. Classical
 configuration entropy is extensive by construction -- a product of local
 degrees of freedom -- whereas area-law entropy in physics is a property of
 entanglement in quantum states. Black hole entropy is striking precisely

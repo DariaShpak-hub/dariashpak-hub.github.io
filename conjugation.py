@@ -2,11 +2,11 @@
 """
 conjugation.py
 
-Can a charge-symmetric grammar produce a motif/anti-motif population
+Can a charge-symmetric rule set produce a motif/anti-motif population
 asymmetry on its own?
 
 The answer is fixed before any measurement, and the argument is short. Let
-sigma be an involution on states (the conjugation) and suppose the grammar is
+sigma be an involution on states (the conjugation) and suppose the rule set is
 sigma-equivariant, meaning H -> G exactly when sigma H -> sigma G. Then sigma
 is an automorphism of the continuation graph, any equivariant transition
 kernel has pi(sigma H) = pi(H), and for every motif class M
@@ -14,13 +14,13 @@ kernel has pi(sigma H) = pi(H), and for every motif class M
     A_M = [P(M) - P(sigma M)] / [P(M) + P(sigma M)] = 0
 
 identically. This is the same statement that forced the probability flux to
-vanish on the reversible grammar: a symmetry of the structure is inherited by
+vanish on the reversible rule set: a symmetry of the structure is inherited by
 every population built from it.
 
 So the possibilities are exhaustive:
 
-    grammar respects sigma   ->  A_M = 0 exactly, for all motifs
-    grammar violates sigma   ->  A_M can be nonzero, but the asymmetry was
+    rule set respects sigma   ->  A_M = 0 exactly, for all motifs
+    rule set violates sigma   ->  A_M can be nonzero, but the asymmetry was
                                  put into the rules
 
 Asking for A_M != 0 "without asymmetry in the rules or the initial
@@ -34,9 +34,9 @@ The conjugation used
 On a fixed five-node vertex set the edge complement sigma(e) = V \\ e maps
 2-edges to 3-edges and back, and sigma^2 = identity. It is the natural
 candidate conjugation for this rule set, exchanging exactly the two edge
-species the grammar acts on.
+species the rule set acts on.
 
-Both branches are verified below: the bundled grammar is shown to violate
+Both branches are verified below: the bundled rule set is shown to violate
 sigma, its symmetrisation is shown to respect it, and A_M is measured in
 each case.
 
@@ -45,17 +45,17 @@ Result
 Verified by exact enumeration with bitmask states over the 20 possible edges
 on five nodes, from a conjugation-symmetric seed.
 
-    symmetrised grammar : 349412 states, sigma-closed, 0 equivariance
+    symmetrised rule set : 349412 states, sigma-closed, 0 equivariance
                           violations, N(M) = N(Mbar) = 82385 exactly,
                           A_M = +0.0000000000
-    bundled grammar     : 4 states, not sigma-closed, 4/4 violations,
+    bundled rule set     : 4 states, not sigma-closed, 4/4 violations,
                           A_M = +1.0
 
 The populations are exactly equal in the symmetric case -- 82385 against
 82385, not approximately -- and maximally unequal when the rules break sigma.
 No spontaneous asymmetry exists in between.
 
-An earlier run of this file reported A_M = -0.13 for the symmetrised grammar.
+An earlier run of this file reported A_M = -0.13 for the symmetrised rule set.
 That was a truncation artifact: exploration stopped at a 200000-state cap
 mid-flight, so the partial state set was not sigma-closed. The tell was that
 the reported count equalled the cap exactly.

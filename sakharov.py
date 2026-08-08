@@ -36,7 +36,7 @@ The asymmetry is measured under the stationary distribution of the
 uniform-successor chain, not over the reachable set. Once a toggle rule is
 present the chain reaches essentially the whole space, and the whole space is
 sigma-symmetric by construction, so a reachable-set count would report zero
-for every grammar regardless of the rules. The rule asymmetry lives in the
+for every rule set regardless of the rules. The rule asymmetry lives in the
 stationary weights, not in which states are reachable.
 
 Results
@@ -45,7 +45,7 @@ A second, accidental symmetry decides the outcome. Bit-complement tau (every
 edge slot present <-> absent) maps compose's precondition exactly onto
 decompose's, so deg(tau m) = deg(m), and tau also exchanges b and t and hence
 M and Mbar. The chosen observable is therefore odd under *two* involutions,
-sigma and tau, and every grammar in the 2x2 above respects tau.
+sigma and tau, and every rule set in the 2x2 above respects tau.
 
     G_A  q-conserved, C-symmetric,  tau-symmetric  ->  A_M = 0
     G_D  q-violated,  C-violated,   tau-symmetric  ->  A_M = 0
@@ -108,7 +108,7 @@ def sigma_array(states):
 
 
 def moves(rules_compose, rules_decompose, toggles):
-    """Build (src, dst) arrays for one grammar over the whole state space."""
+    """Build (src, dst) arrays for one rule set over the whole state space."""
     src_all = np.arange(N, dtype=np.int64)
     S, D = [], []
 
@@ -189,10 +189,30 @@ def charge_violated(src, dst):
     return bool(np.any(q(src[sample]) != q(dst[sample])))
 
 
+def sigma_equivariant(comp, dec, tog):
+    """
+    Is the rule set closed under sigma?
+
+    Checked on the rule tables directly rather than on sampled transitions.
+    An earlier version compared a 400000-move slice of the (src, dst) arrays,
+    which is not closed under anything and reported the symmetrised rule set
+    as C-violating.
+    """
+    cbase = {(min(i, j), max(i, j), k) for i, j, k in comp}
+    dbase = {(k, min(i, j), max(i, j)) for k, i, j in dec}
+    both = cbase | dbase
+    cs = {(min(SIG[i], SIG[j]), max(SIG[i], SIG[j]), SIG[k])
+          for i, j, k in comp}
+    ds = {(SIG[k], min(SIG[i], SIG[j]), max(SIG[i], SIG[j]))
+          for k, i, j in dec}
+    ts = {SIG[i] for i in tog}
+    return cs.issubset(both) and ds.issubset(both) and ts.issubset(set(tog))
+
+
 def main():
     cconj, dconj = conjugate_moves(COMPOSE, DECOMPOSE)
 
-    grammars = {
+    rule_sets = {
         "G_A  q-conserved, C-symmetric":
             (COMPOSE + cconj, DECOMPOSE + dconj, []),
         "G_B  q-violated,  C-symmetric":
@@ -204,15 +224,11 @@ def main():
     }
 
     print("%-32s %10s %8s %8s %14s" % (
-        "grammar", "moves", "q-viol", "C-viol", "A_M"))
-    for name, (comp, dec, tog) in grammars.items():
+        "rule set", "moves", "q-viol", "C-viol", "A_M"))
+    for name, (comp, dec, tog) in rule_sets.items():
         src, dst = moves(comp, dec, tog)
         qv = charge_violated(src, dst)
-        # C violation: is the move set closed under sigma?
-        sconj = set(zip(sigma_array(src[:400000]).tolist(),
-                        sigma_array(dst[:400000]).tolist()))
-        base = set(zip(src[:400000].tolist(), dst[:400000].tolist()))
-        cv = not sconj.issubset(base | sconj) or len(sconj - base) > 0
+        cv = not sigma_equivariant(comp, dec, tog)
         pi = stationary(src, dst)
         A, pM, pMb = asymmetry(pi)
         print("%-32s %10d %8s %8s %+14.10f" % (

@@ -2,9 +2,9 @@
 """
 sector_breaking.py
 
-Can a conjugation-symmetric grammar break the symmetry spontaneously?
+Can a conjugation-symmetric rule set break the symmetry spontaneously?
 
-conjugation.py showed that a sigma-equivariant grammar has A_M = 0 exactly.
+conjugation.py showed that a sigma-equivariant rule set has A_M = 0 exactly.
 That argument is about the *ensemble*, and it is exactly the argument that
 spontaneous symmetry breaking evades in ordinary physics: a symmetric
 Hamiltonian has vanishing average magnetisation while ergodicity breaks and
@@ -12,7 +12,7 @@ any single realisation sits in one asymmetric sector.
 
 The sharper question is therefore about sectors rather than averages. Take the
 full state space, decompose it into connected components of the continuation
-graph under a sigma-equivariant grammar, and ask how sigma acts on the set of
+graph under a sigma-equivariant rule set, and ask how sigma acts on the set of
 components.
 
     sigma fixes every component

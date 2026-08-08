@@ -3,11 +3,11 @@
 rewrite_research.py
 
 Experimental instrument for the question: which properties of a rewrite
-grammar determine whether non-trivial effective structure emerges at all?
+rule set determine whether non-trivial effective structure emerges at all?
 
 Motivation
 ----------
-A grammar whose rules are mutually inverse produces a *symmetric* continuation
+A rule set whose rules are mutually inverse produces a *symmetric* continuation
 graph. On such a graph several natural observables are degenerate by
 construction, not by accident:
 
@@ -23,8 +23,8 @@ the machinery to look for one and to measure what appears once it exists.
 
 Design
 ------
-Three grammars are compared on identical seeds, with predictions registered
-in advance (see GRAMMARS below):
+Three rule sets are compared on identical seeds, with predictions registered
+in advance (see RULE_SETS below):
 
     G1  compose + decompose            reversible; predicted fully degenerate
     G2  compose only                   strictly monotone; predicted acyclic
@@ -60,7 +60,7 @@ def contract_edge(H):
     Merge two nodes joined by a common edge (edge contraction).
 
     This is coarse-graining expressed as a rewrite. It strictly decreases the
-    node count, so node count is a Lyapunov function for any grammar
+    node count, so node count is a Lyapunov function for any rule set
     containing this rule. Singleton edges produced by the merge are dropped:
     an edge on one node carries no relational content.
     """
@@ -89,7 +89,7 @@ COMPOSE = Rule("compose", compose_binary_to_ternary)
 DECOMPOSE = Rule("decompose", decompose_ternary)
 CONTRACT = Rule("contract", contract_edge)
 
-GRAMMARS = {
+RULE_SETS = {
     "G1-reversible": {
         "rules": [COMPOSE, DECOMPOSE],
         "prediction": "one SCC, R=1 everywhere, zero flux, no sinks",
@@ -358,9 +358,9 @@ def main(argv=None):
     ap.add_argument("--path", type=int, default=4, metavar="N",
                     help="seed with a path of N binary edges (default: 4)")
     ap.add_argument("--max-states", type=int, default=None, metavar="M",
-                    help="cap distinct states per grammar")
-    ap.add_argument("--grammar", choices=sorted(GRAMMARS), default=None,
-                    help="run only one grammar (default: all)")
+                    help="cap distinct states per rule set")
+    ap.add_argument("--rules", choices=sorted(RULE_SETS), default=None,
+                    help="run only one rule set (default: all)")
     args = ap.parse_args(argv)
 
     seed = path_seed(args.path)
@@ -369,9 +369,9 @@ def main(argv=None):
     print("=" * 68)
     print()
 
-    names = [args.grammar] if args.grammar else sorted(GRAMMARS)
+    names = [args.rules] if args.rules else sorted(RULE_SETS)
     for name in names:
-        run(seed, name, GRAMMARS[name], max_states=args.max_states)
+        run(seed, name, RULE_SETS[name], max_states=args.max_states)
 
 
 if __name__ == "__main__":
