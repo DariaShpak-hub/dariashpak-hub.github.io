@@ -481,6 +481,67 @@ def relaxation(name, states, graph, cg_name, steps, seed_key=None):
             "window": len(window)}
 
 
+def scan(paths, rules, cg_names, steps=600):
+    """
+    Two-dimensional scan of the arrow over (system size, coarse-graining
+    resolution), from an identically prepared initial state at every size.
+
+    Both extremes of resolution must give exactly zero by construction, which
+    makes them useful controls:
+
+        trivial   one macrostate, Omega = N, so S_B = ln N is constant
+        identity  every macrostate a singleton, Omega = 1, so S_B = 0
+
+    Any arrow found in between is therefore a property of the coarse-graining
+    as much as of the dynamics -- the microscopic rules are the same in every
+    column of the table.
+    """
+    print(f"{'N':>6} {'coarse':>9} {'macro':>6} {'<dS_B>':>9} "
+          f"{'rise':>8} {'fall':>8} {'ratio':>8}")
+    rows = []
+    for n in paths:
+        seed = path_seed(n)
+        states, graph, _ = continuation_graph(seed, rules=rules)
+        keys = list(states)
+        P = metropolis(graph, keys)
+        N = len(keys)
+        p0 = {seed.canonical(): 1.0}
+
+        # Evolve the fine chain once; every coarse-graining is a projection
+        # of the same trajectory.
+        traj = [dict(p) for _, p in evolve(P, p0, steps)]
+        H = [math.log(N) - shannon(p) for p in traj]
+        H0 = H[0]
+
+        for cn in cg_names:
+            fn = COARSE[cn]
+            label = {k: fn(states[k]) for k in keys}
+            blocks = defaultdict(list)
+            for k in keys:
+                blocks[label[k]].append(k)
+            omega = {M: len(v) for M, v in blocks.items()}
+
+            SB = []
+            for p in traj:
+                Pi = defaultdict(float)
+                for k, m in p.items():
+                    Pi[label[k]] += m
+                SB.append(sum(m * math.log(omega[M])
+                              for M, m in Pi.items() if m > 0))
+
+            win = [SB[i + 1] - SB[i] for i in range(len(SB) - 1)
+                   if H[i + 1] > 1e-10 * max(H0, 1.0)]
+            pos = sum(x for x in win if x > 0)
+            neg = -sum(x for x in win if x < 0)
+            ratio = neg / pos if pos > 1e-12 else 0.0
+
+            print(f"{N:>6} {cn:>9} {len(blocks):>6} {SB[-1] - SB[0]:>+9.4f} "
+                  f"{pos:>8.4f} {neg:>8.4f} {ratio:>8.4f}")
+            rows.append((N, cn, len(blocks), SB[-1] - SB[0], ratio))
+        print()
+    return rows
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
     ap.add_argument("--paths", type=int, nargs="+", default=[4, 5, 6],
@@ -502,6 +563,8 @@ def main(argv=None):
                          "confounds any trend in the fluctuations.")
     ap.add_argument("--steps", type=int, default=200,
                     help="relaxation steps (default: 200)")
+    ap.add_argument("--scan", action="store_true",
+                    help="scan the arrow over size x coarse-graining resolution")
     args = ap.parse_args(argv)
 
     rules = GRAMMARS[args.grammar]["rules"]
@@ -511,6 +574,10 @@ def main(argv=None):
              if args.relax else ""))
     print("=" * 72)
     print()
+
+    if args.scan:
+        scan(args.paths, rules, args.coarse, steps=args.steps)
+        return
 
     for n in args.paths:
         seed = path_seed(n)
