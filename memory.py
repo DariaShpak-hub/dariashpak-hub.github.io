@@ -22,6 +22,30 @@ seeds spread over c distinct charge classes the prediction is therefore
 
 Four seeds are used, two in each of two weight classes, so k = 4 and c = 2,
 giving predicted I -> ln 2 = 0.6931.
+
+Result, and its precise scope
+-----------------------------
+I decays from ln 4 to ln 2 = 0.693147, matching to 1.1e-16, with within-class
+mutual information reaching exactly 0.000. Note this is computed over the
+full 2^20 microstate distribution, not over chosen observables: the two
+same-sector seeds converge to the *same distribution*, so no function of the
+current state can separate them.
+
+But that is a statement about ensembles, not trajectories, and in a finite
+recurrent chain the two differ sharply. The seed here has pi = 2.7778e-3, so
+its mean Poincare recurrence time is 1/pi = 360 steps, against an erasure
+time of roughly 100 steps. The trajectory returns to its exact initial state
+more often than the ensemble takes to forget it. Memory is erased from the
+distribution while being revisited by the path.
+
+This matters for cyclic arguments. A conserved charge confines a cycle to one
+sector; it does not forbid the cycle. Recurrence guarantees the low-entropy
+initial state recurs, and entropy genuinely falls when it does. The real
+obstructions to a cyclic cosmology are the recurrence timescale, of order
+e^S and therefore e^(10^104) for the observed universe, and the Boltzmann
+brain problem: small fluctuations are exponentially more likely than large
+ones, so a randomly chosen low-entropy observer should find a minimal
+fluctuation rather than an ordered cosmos.
 """
 
 import numpy as np
