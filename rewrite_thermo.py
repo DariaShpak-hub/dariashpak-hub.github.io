@@ -451,13 +451,34 @@ def relaxation(name, states, graph, cg_name, steps, seed_key=None):
         assert h1 <= h0 + 1e-12, f"H-theorem violated at t={t0}->{t1}"
 
     total = traj[-1][1] - traj[0][1]
-    steps_up = sum(1 for r in traj[1:] if r[4] > 1e-15)
-    steps_dn = sum(1 for r in traj[1:] if r[4] < -1e-15)
-    print(f"  total <Delta S_B> = {total:+.4f} nats over {steps} steps "
-          f"({steps_up} up, {steps_dn} down)")
-    print(f"  monotone increase: {steps_dn == 0}")
+
+    # Statistics must be restricted to the relaxation window. Once the chain
+    # has equilibrated, dS_B is pure floating-point roundoff (~1e-17), and
+    # counting its sign measures numerical noise rather than dynamics -- which
+    # made a naive up/down count flip from "200 up, 0 down" to "19 up, 381
+    # down" purely by changing the number of steps simulated.
+    H0 = traj[0][3]
+    window = [r for r in traj[1:] if r[3] > 1e-10 * max(H0, 1.0)]
+    eps = 1e-12
+
+    n_up = sum(1 for r in window if r[4] > eps)
+    n_dn = sum(1 for r in window if r[4] < -eps)
+    pos = sum(r[4] for r in window if r[4] > 0)
+    neg = -sum(r[4] for r in window if r[4] < 0)
+    worst = min([r[4] for r in window], default=0.0)
+
+    print(f"  total <Delta S_B> = {total:+.4f} nats "
+          f"(relaxation window: {len(window)} steps)")
+    print(f"  within window: {n_up} up, {n_dn} down   "
+          f"rise={pos:.4f}  fall={neg:.4f}  "
+          f"fluctuation ratio={neg / pos if pos else 0.0:.4f}")
+    print(f"  largest single decrease = {worst:+.5f} nats")
+    print(f"  monotone increase: {n_dn == 0}")
     print()
-    return total, steps_dn
+    return {"N": N, "total": total, "n_up": n_up, "n_dn": n_dn,
+            "pos": pos, "neg": neg,
+            "ratio": neg / pos if pos else 0.0, "worst": worst,
+            "window": len(window)}
 
 
 def main(argv=None):
@@ -473,6 +494,12 @@ def main(argv=None):
                     help="use the quasi-stationary distribution (absorbing chains)")
     ap.add_argument("--relax", action="store_true",
                     help="run the relaxation experiment (section 5) instead")
+    ap.add_argument("--from-seed", action="store_true",
+                    help="prepare the seed graph itself rather than the "
+                         "lowest-Omega macrostate. Required for comparing "
+                         "across N: 'lowest Omega' sits at a different "
+                         "distance from equilibrium at each size, which "
+                         "confounds any trend in the fluctuations.")
     ap.add_argument("--steps", type=int, default=200,
                     help="relaxation steps (default: 200)")
     args = ap.parse_args(argv)
@@ -486,10 +513,13 @@ def main(argv=None):
     print()
 
     for n in args.paths:
-        states, graph, _ = continuation_graph(path_seed(n), rules=rules)
+        seed = path_seed(n)
+        states, graph, _ = continuation_graph(seed, rules=rules)
         if args.relax:
+            start = seed.canonical() if args.from_seed else None
             for cn in args.coarse:
-                relaxation(f"path({n})", states, graph, cn, args.steps)
+                relaxation(f"path({n})", states, graph, cn, args.steps,
+                           seed_key=start)
         else:
             report(f"path({n})", states, graph, args.coarse, use_qsd=args.qsd)
 

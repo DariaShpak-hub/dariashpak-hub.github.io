@@ -18,8 +18,9 @@ which the self-check under ``__main__`` verifies.
 """
 
 import argparse
-from itertools import permutations
 from collections import deque, defaultdict
+
+from canon import canonical_form
 
 # ---------- Hypergraph -------------------------------------------------
 
@@ -27,9 +28,8 @@ from collections import deque, defaultdict
 class Hypergraph:
     def __init__(self, edges=()):
         self.edges = frozenset(frozenset(e) for e in edges)
-        # Canonical form is expensive (O(n!)); compute it lazily once and
-        # cache it, since it is queried from __hash__, __eq__, __repr__ and
-        # the search loop.
+        # Cache the canonical form: it is queried from __hash__, __eq__,
+        # __repr__ and the search loop.
         self._canonical = None
 
     def nodes(self):
@@ -46,36 +46,15 @@ class Hypergraph:
         sorted edge tuples) that is identical for isomorphic hypergraphs.
         The empty hypergraph canonicalizes to the empty tuple.
 
-        Complexity is O(n!) in the number of nodes, so this is only suitable
-        for the small graphs a rewrite scaffold explores.
+        Delegates to canon.canonical_form, which uses individualization-
+        refinement rather than minimising over all n! relabelings. The two
+        agree as equivalence relations (verified exhaustively against the
+        brute-force reference); the fast form is not required to return the
+        same representative tuple, only the same one for isomorphic inputs.
         """
-        if self._canonical is not None:
-            return self._canonical
-
-        nodes = sorted(self.nodes())
-        if not nodes:
-            # Always return the same hashable value type. Returning ``self``
-            # here (as an earlier version did) caused infinite recursion in
-            # __hash__/__repr__ for the empty graph.
-            self._canonical = ()
-            return self._canonical
-
-        # Relabel onto the fixed alphabet 0..n-1 and take the lexicographically
-        # smallest image over all such bijections. Mapping to a fixed alphabet
-        # (rather than to a permutation of the graph's own labels) makes the
-        # result a true isomorphism invariant: two isomorphic graphs with
-        # different surviving labels -- which rules routinely produce -- get the
-        # same canonical form, matching the "unlabeled hypergraph" model.
-        best = None
-        for p in permutations(range(len(nodes))):
-            m = dict(zip(nodes, p))
-            img = tuple(sorted(tuple(sorted(m[v] for v in e))
-                               for e in self.edges))
-            if best is None or img < best:
-                best = img
-
-        self._canonical = best
-        return best
+        if self._canonical is None:
+            self._canonical = canonical_form(self.edges)
+        return self._canonical
 
     def __hash__(self):
         return hash(self.canonical())
