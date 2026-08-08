@@ -140,30 +140,6 @@ def report(n, rules, cg_name):
             "omega_seed": omega[seed_M], "total": total}
 
 
-def main(argv=None):
-    ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
-    ap.add_argument("--paths", type=int, nargs="+", default=[4, 5, 6, 7, 8, 9])
-    ap.add_argument("--grammar", choices=sorted(GRAMMARS),
-                    default="G1-reversible")
-    ap.add_argument("--coarse", nargs="+", default=["degseq"],
-                    choices=sorted(COARSE))
-    args = ap.parse_args(argv)
-
-    rules = GRAMMARS[args.grammar]["rules"]
-    print("=" * 72)
-    print(f"grammar = {args.grammar}   (static -- no time parameter)")
-    print("=" * 72)
-    print()
-
-    for cg in args.coarse:
-        for n in args.paths:
-            report(n, rules, cg)
-
-
-if __name__ == "__main__":
-    main()
-
-
 def entropy_gap(states, graph, cg_name, seed):
     """
     The total arrow, exactly, with no dynamics.
@@ -188,3 +164,28 @@ def entropy_gap(states, graph, cg_name, seed):
     eq = sum((omega[M] / N) * math.log(omega[M]) for M in omega)
     start = math.log(omega[label[seed.canonical()]])
     return eq - start, eq, start
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
+    ap.add_argument("--paths", type=int, nargs="+", default=[4, 5, 6, 7, 8, 9])
+    ap.add_argument("--grammar", choices=sorted(GRAMMARS),
+                    default="G1-reversible")
+    ap.add_argument("--coarse", nargs="+", default=["degseq"],
+                    choices=sorted(COARSE))
+    args = ap.parse_args(argv)
+
+    rules = GRAMMARS[args.grammar]["rules"]
+    print("=" * 72)
+    print(f"grammar = {args.grammar}   (static -- no time parameter)")
+    print("=" * 72)
+    print()
+
+    for cg in args.coarse:
+        for n in args.paths:
+            report(n, rules, cg)
+
+
+if __name__ == "__main__":
+    main()
+
