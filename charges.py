@@ -58,9 +58,13 @@ blocked because the union edge is already present, and every decompose
 because a resulting binary edge already is. It is an isolated vertex of the
 continuation graph produced by the no-duplicate-edge guards.
 
-Frozen states do not proliferate. Their fraction falls with system size --
-0.083 at n=4, 0.045 at n=5, 0.0004 at n=6 -- so they are small-size
-accidents rather than a jamming transition.
+Frozen states do not proliferate. Across n = 4..7 and w = 3..11 their
+absolute count is never more than 2, and does not grow with density: at n=6
+the counts for w = 4..11 are 0,0,0,0,2,1,2,1 while the state space grows from
+6 to 10834. The fraction therefore collapses -- peak 0.143 at n=4, 0.046 at
+n=5, 0.0026 at n=6 -- so these are isolated accidents, not a jamming
+transition, which would instead show the frozen fraction rising toward a
+finite value with density.
 
 This charge is topological, unsigned, and carries no local current, so it is
 charge-like only in the superselection sense. Nothing here resembles an
