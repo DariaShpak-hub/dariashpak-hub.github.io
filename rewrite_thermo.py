@@ -157,6 +157,55 @@ def transition(graph, keys, lazy=True):
     return P
 
 
+def metropolis(graph, keys):
+    """
+    Metropolis kernel whose stationary distribution is *uniform* over
+    microstates -- the microcanonical ensemble.
+
+    This matters for testing S = k ln Omega. Boltzmann's relation presupposes
+    equal a priori probability of microstates, but a uniform-successor random
+    walk on an undirected graph equilibrates to pi ~ degree, not to uniform.
+    Under that walk ln Omega is simply not the equilibrium entropy, and the
+    "defect" column measures precisely that mismatch.
+
+    Proposing a uniform neighbour and accepting with probability
+    min(1, deg(u)/deg(v)) makes the kernel symmetric, hence doubly stochastic,
+    hence uniform-stationary, while remaining reversible. Rejections stay put,
+    which also makes the chain aperiodic -- so the bipartite-periodicity
+    problem that required a lazy walk earlier disappears on its own.
+    """
+    deg = {u: len(graph.get(u, ())) for u in keys}
+    P = defaultdict(dict)
+    for u in keys:
+        succ = sorted(graph.get(u, ()))
+        if not succ:
+            P[u][u] = 1.0
+            continue
+        stay = 1.0
+        for v in succ:
+            acc = min(1.0, deg[u] / deg[v]) if deg[v] else 1.0
+            p = acc / deg[u]
+            P[u][v] = P[u].get(v, 0.0) + p
+            stay -= p
+        if stay > 1e-15:
+            P[u][u] = P[u].get(u, 0.0) + stay
+    return P
+
+
+def evolve(P, p0, steps):
+    """Exact forward evolution of the *fine* distribution."""
+    p = dict(p0)
+    for t in range(steps + 1):
+        yield t, p
+        nxt = defaultdict(float)
+        for u, mass in p.items():
+            if mass <= 0:
+                continue
+            for v, pr in P[u].items():
+                nxt[v] += mass * pr
+        p = dict(nxt)
+
+
 def stationary(P, keys, iters=50000, tol=1e-15):
     n = len(keys)
     pi = {k: 1.0 / n for k in keys}
@@ -330,6 +379,87 @@ def report(name, states, graph, cg_names, use_qsd=False):
     print()
 
 
+def relaxation(name, states, graph, cg_name, steps, seed_key=None):
+    """
+    The gas-in-a-box experiment (section 5): prepare a low-entropy initial
+    macrostate and ask whether <Delta S_B> > 0 as it relaxes.
+
+    The fine chain is evolved *exactly* and the macrostate distribution is
+    obtained by projection, so nothing here depends on the coarse process
+    being Markov -- which in general it is not.
+
+    Note what the arrow does and does not come from. The kernel is reversible
+    and has zero steady-state entropy production; the dynamics contains no
+    arrow. The arrow comes from preparing a low-Omega initial condition in a
+    state space where high-Omega macrostates vastly outnumber low-Omega ones.
+    That is Boltzmann's answer, reproduced rather than programmed in.
+    """
+    keys = list(states)
+    P = metropolis(graph, keys)
+    N = len(keys)
+
+    # Sanity: the kernel must be symmetric (=> doubly stochastic => uniform
+    # stationary => S = ln Omega is the right equilibrium entropy).
+    for u in keys:
+        for v, p in P[u].items():
+            if u != v:
+                assert abs(p - P[v].get(u, 0.0)) < 1e-12, "kernel not symmetric"
+
+    fn = COARSE[cg_name]
+    label = {k: fn(states[k]) for k in keys}
+    blocks = defaultdict(list)
+    for k in keys:
+        blocks[label[k]].append(k)
+    omega = {M: len(ks) for M, ks in blocks.items()}
+
+    if seed_key is None:
+        # Prepare the lowest-Omega macrostate: "all the gas on the left".
+        M0 = min(omega, key=lambda M: (omega[M], sorted(blocks[M])[0]))
+        seed_key = sorted(blocks[M0])[0]
+
+    p0 = {seed_key: 1.0}
+
+    print(f"{name}  motif={cg_name}  N={N}  macrostates={len(blocks)}")
+    print(f"  start: Omega={omega[label[seed_key]]}  "
+          f"S_B={math.log(omega[label[seed_key]]):.4f}   "
+          f"equilibrium S_B(max)=ln {N} = {math.log(N):.4f}")
+    print(f"  {'t':>4} {'<S_B>':>9} {'S_fine':>9} {'H=D(p||u)':>10} "
+          f"{'dS_B':>10}")
+
+    prev_SB = None
+    traj = []
+    for t, p in evolve(P, p0, steps):
+        Pi = defaultdict(float)
+        for k, m in p.items():
+            Pi[label[k]] += m
+        SB = sum(m * math.log(omega[M]) for M, m in Pi.items() if m > 0)
+        S_fine = shannon(p)
+        H = math.log(N) - S_fine          # D(p || uniform)
+        dSB = None if prev_SB is None else SB - prev_SB
+        traj.append((t, SB, S_fine, H, dSB))
+        prev_SB = SB
+
+    show = [r for r in traj if r[0] in
+            (0, 1, 2, 3, 5, 8, 12, 20, 35, 60, 100, steps)]
+    for t, SB, S_fine, H, dSB in show:
+        print(f"  {t:>4} {SB:>9.4f} {S_fine:>9.4f} {H:>10.4f} "
+              + ("     --   " if dSB is None else f"{dSB:>+10.5f}"))
+
+    # H-theorem: for a doubly stochastic kernel the fine Shannon entropy is
+    # non-decreasing, so H = D(p || uniform) must never increase.
+    for (t0, _, _, h0, _), (t1, _, _, h1, _) in zip(traj, traj[1:]):
+        assert h1 <= h0 + 1e-12, f"H-theorem violated at t={t0}->{t1}"
+
+    total = traj[-1][1] - traj[0][1]
+    steps_up = sum(1 for r in traj[1:] if r[4] > 1e-15)
+    steps_dn = sum(1 for r in traj[1:] if r[4] < -1e-15)
+    print(f"  total <Delta S_B> = {total:+.4f} nats over {steps} steps "
+          f"({steps_up} up, {steps_dn} down)")
+    print(f"  monotone increase: {steps_dn == 0}")
+    print()
+    return total, steps_dn
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.strip().splitlines()[0])
     ap.add_argument("--paths", type=int, nargs="+", default=[4, 5, 6],
@@ -341,17 +471,27 @@ def main(argv=None):
                     choices=sorted(COARSE))
     ap.add_argument("--qsd", action="store_true",
                     help="use the quasi-stationary distribution (absorbing chains)")
+    ap.add_argument("--relax", action="store_true",
+                    help="run the relaxation experiment (section 5) instead")
+    ap.add_argument("--steps", type=int, default=200,
+                    help="relaxation steps (default: 200)")
     args = ap.parse_args(argv)
 
     rules = GRAMMARS[args.grammar]["rules"]
     print("=" * 72)
-    print(f"grammar = {args.grammar}")
+    print(f"grammar = {args.grammar}"
+          + ("   [relaxation from prepared low-entropy state]"
+             if args.relax else ""))
     print("=" * 72)
     print()
 
     for n in args.paths:
         states, graph, _ = continuation_graph(path_seed(n), rules=rules)
-        report(f"path({n})", states, graph, args.coarse, use_qsd=args.qsd)
+        if args.relax:
+            for cn in args.coarse:
+                relaxation(f"path({n})", states, graph, cn, args.steps)
+        else:
+            report(f"path({n})", states, graph, args.coarse, use_qsd=args.qsd)
 
 
 if __name__ == "__main__":
