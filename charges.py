@@ -44,11 +44,27 @@ equivalently the cycle rank w - n + c, since the other two are fixed. Neither
 edge count nor maximum degree is conserved. Local rewrites cannot join or
 split connected pieces, so connectivity is a superselection rule.
 
-It is not the whole story. At n=6, w=6 there are four sectors but only two
-distinct values of connectivity, so at least one further invariant remains
-unidentified. And this is a topological charge, unsigned and without a local
-current, so it is charge-like only in the superselection sense -- nothing
-here resembles an oriented or signed field.
+Connectivity is not the whole story, and the complete answer is finer.
+Because compose and decompose act entirely within one connected component,
+they can move neither nodes nor weight between components, so the conserved
+quantity is the *multiset of per-component (node count, weight)* -- see
+complete_charge.py. That is strictly finer than counting components, and it
+separates every sector in 17 of the 18 (n, w) cases enumerated, including
+n=6 and n=7 where component-counting fails.
+
+The single exception, n=4 w=7, is not a further invariant. Its second
+"sector" is one frozen state with zero available moves: every compose is
+blocked because the union edge is already present, and every decompose
+because a resulting binary edge already is. It is an isolated vertex of the
+continuation graph produced by the no-duplicate-edge guards.
+
+Frozen states do not proliferate. Their fraction falls with system size --
+0.083 at n=4, 0.045 at n=5, 0.0004 at n=6 -- so they are small-size
+accidents rather than a jamming transition.
+
+This charge is topological, unsigned, and carries no local current, so it is
+charge-like only in the superselection sense. Nothing here resembles an
+oriented or signed field.
 """
 
 import argparse
