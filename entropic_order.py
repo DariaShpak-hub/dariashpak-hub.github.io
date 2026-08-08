@@ -162,3 +162,29 @@ def main(argv=None):
 
 if __name__ == "__main__":
     main()
+
+
+def entropy_gap(states, graph, cg_name, seed):
+    """
+    The total arrow, exactly, with no dynamics.
+
+        Delta S_B = sum_M (Omega(M)/N) ln Omega(M)  -  ln Omega(M_0)
+
+    The first term is the equilibrium mean of S_B: under a kernel with uniform
+    stationary distribution the equilibrium macrostate weight is exactly
+    Pi(M) = Omega(M)/N. The second is the prepared macrostate's entropy. Their
+    difference reproduces the measured end-to-end relaxation to machine
+    precision, so the entire quantity is fixed by counting -- no trajectory,
+    no clock, no simulation.
+
+    Its immediate consequence is that the *sign* of the arrow is not a fact
+    about system size. It is negative whenever the prepared macrostate happens
+    to sit above the equilibrium mean, and positive when below. What genuinely
+    varies with size is not this endpoint difference but the smoothness of the
+    path taken to it.
+    """
+    label, blocks, omega = macrostates(states, graph, cg_name)
+    N = len(states)
+    eq = sum((omega[M] / N) * math.log(omega[M]) for M in omega)
+    start = math.log(omega[label[seed.canonical()]])
+    return eq - start, eq, start
