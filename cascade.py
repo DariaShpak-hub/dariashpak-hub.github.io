@@ -54,10 +54,23 @@ the gate self-closing restricts the climb instead of structuring it. B also
 drains its own seed weight entirely, losing weight 4 from the support by
 t=175.
 
-The entropy pulse of V1 does not recur in A or B within 300 steps. V1 peaked
-and fell because it finished draining into a single terminal sector; A and B
-keep opening new territory, so their entropy is still monotone rising when
-the run ends.
+The entropy pulse of V1 does not recur in A or B within 300 steps, but that
+is only because 300 steps is far too short. Run to t = 12000, variant A peaks
+at S = 12.67029 at t = 3696 and declines monotonically thereafter, reaching
+12.51723 by t = 12000 with dS/dt negative for the last 8000 steps. The pulse
+is the same shape as V1's, displaced to the top of the ladder.
+
+The decline has barely begun. Weight 20 is terminal: escape requires b = 0,
+and the only weight-20 state with b = 0 has all ten ternary slots filled, so
+nothing further can be added. The asymptotic state is therefore
+compose/decompose confined to the weight-20 sector, which holds 44803 states,
+so the limiting entropy is at most ln 44803 = 10.710. The total fall is
+therefore at least 1.96 nats, of which 0.153 has occurred by t = 12000. Mean
+weight is 16.24 and still climbing, and only 2% of the mass has reached
+weight 20.
+
+Concentration is far slower than expansion here: the rise to peak took under
+4000 steps, and the fall is under a tenth complete after three times that.
 """
 
 import numpy as np
