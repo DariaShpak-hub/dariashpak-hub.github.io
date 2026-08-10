@@ -81,7 +81,143 @@ invented to make a number come out.
 
 All five must hold. N = 2000, single history per point unless stated.
 
-Results are filled in below after the scan has actually been run.
+Result 1: at the criteria as written, NOTHING in the box works
+---------------------------------------------------------------
+600 points drawn uniformly from the six-knob box, two histories each. The
+habitable fraction as the isotropy threshold tau is relaxed:
+
+    tau        0.05  0.10  0.20  0.30  0.50  0.80  1.00  1.20  1.50  2.00  inf
+    seed A     .000  .000  .000  .000  .000  .002  .010  .035  .117  .213  .232
+    seed B     .000  .000  .000  .000  .000  .000  .002  .022  .110  .230  .250
+
+At the pre-registered tau = 0.30 the answer is 0 out of 600, twice over. The
+model is not merely tuned, it is dead everywhere -- and it stays dead until the
+isotropy requirement has been loosened by a factor of five.
+
+Two pilot runs say this is structural rather than a small-N artifact. Pure
+subdivision at alpha = 1 reproduces shear_damping.py exactly -- shear 0.144,
+0.132, 0.188, 0.093, 0.065 at N = 500 to 8000 -- but sits at d = 1.00 the whole
+way. Switch the closes on and shear locks near 1.4 and stops moving: 1.33,
+1.56, 1.39, 1.35, 1.35, 1.53 at N = 500 to 16000. The isotropy that
+subdivision buys is destroyed by the move that creates dimension, and the
+damage does not decay with size.
+
+That is model.py's tradeoff again, and this scan is its sharpest statement so
+far: it is not a matter of finding the right parameters, because there are no
+right parameters. Even with the isotropy criterion deleted entirely (tau = inf)
+only 23% of the box survives the other four.
+
+Everything below runs at tau = 1.50, the tightest grid value leaving enough of
+the box alive to measure. That is a deliberately weakened criterion and every
+number after this point inherits the weakening.
+
+Result 2: the criterion chosen decides the answer
+---------------------------------------------------
+Failure counts (a point can fail several criteria at once):
+
+                  tau = 0.30            tau = 1.50
+    isotropic     589   98.2%           245   46.2%
+    dimension     252   42.0%           252   47.5%
+    stable        214   35.7%           214   40.4%
+    extended      177   29.5%           177   33.4%
+    expands         0    0.0%             0    0.0%
+
+Two things worth admitting. First, "expands" never fires -- I wrote a criterion
+that does no work at all, which is exactly the failure mode I flagged in
+advance and then walked into. Second, moving one threshold turns isotropy from
+the sole cause of death into one of four roughly equal causes. The headline
+number is a property of the criteria, not of the model.
+
+Result 3: which knobs constrain -- and it is not the ones expected
+-------------------------------------------------------------------
+Habitability rate by knob value, read straight off the joint samples:
+
+    knob        low third   middle   high third
+    cap            0.215     0.090     0.014
+    p_close        0.040     0.107     0.193
+    reach          0.109     0.156     0.082
+    p_open         0.135     0.110     0.095
+    beta           0.130     0.092     0.117
+    alpha          0.090     0.125     0.125
+
+Only two knobs really bite: the degree cap, strongly and monotonically
+downward, and the close rate, strongly upward. The two anti-Yule exponents --
+alpha, which shear_damping.py showed was the whole isotropy mechanism, and
+beta, its analogue for chord placement -- are almost flat. Once closes are in
+play, the mechanism that damps shear stops mattering.
+
+Result 4: one-at-a-time understates the volume by 40 to 70 times
+------------------------------------------------------------------
+Three habitable anchors, each axis swept with the other five held fixed, each
+grid point scored as the fraction of four seeds that pass:
+
+    anchor                                   naive product   joint/naive
+    a=1.74 b=0.69 pc=0.84 po=0.37 cap=5 r=3      0.00170          68.5
+    a=1.55 b=1.20 pc=0.97 po=0.41 cap=3 r=4      0.00171          68.4
+    a=1.06 b=2.36 pc=0.73 po=0.78 cap=4 r=3      0.00293          39.9
+
+    measured joint fraction                      0.11667
+
+If the habitable set were a box, the product of the axial fractions would equal
+the joint fraction exactly. It is off by nearly two orders of magnitude, and in
+the direction that says the set is a curved ridge rather than a box: the
+constraints trade against each other, so a step that ruins the universe along
+one axis can be paid for by a step along another. One-at-a-time variation walks
+straight off the ridge and reports a cliff, while the ridge itself is long.
+
+This is the Adams result reproduced in miniature, and it is the single
+strongest technical objection to the fine-tuning argument as usually stated.
+
+Result 5: the prior moves the answer by 3.6x
+----------------------------------------------
+Same 600 samples, reweighted:
+
+    uniform                                        0.1167
+    log-uniform in alpha, beta, p_close, p_open    0.0431
+    1/sqrt in alpha only                           0.1098
+    linear tilt toward large p_close               0.1549
+
+A factor of 3.6 between the extremes, from nothing but a change of measure on
+parameters we invented ourselves. No evidence can settle which of these is
+correct, because there is nothing for the prior to be correct about.
+
+Result 6: the box matters, but only through knobs that constrain
+------------------------------------------------------------------
+    alpha<=3,  cap<=12, reach<=5     0.1167   (600 samples)
+    alpha<=9,  cap<=12, reach<=5     0.1100   (200 samples)
+    alpha<=3,  cap<=30, reach<=5     0.0450   (200 samples)
+    alpha<=3,  cap<=12, reach<=10    0.0900   (200 samples)
+
+I expected widening alpha to shrink the fraction and it did not -- 0.117 to
+0.110, no effect, because alpha is not a constraining knob. Widening the degree
+cap from 12 to 30 cuts the fraction by 2.6x, because cap is. So the objection
+is real but narrower than the usual statement of it: an unbounded parameter
+only dilutes the tuning number if habitability actually depends on it. Nothing
+in the model fixes cap <= 12, and nothing ever will.
+
+Verdict
+-------
+Two separate results, and they point opposite ways.
+
+The physics result is negative and hard. Under criteria fixed before the scan,
+zero of 600 parameter settings produce a viable universe, and the reason is
+always the same one: the move that creates dimension destroys isotropy, at a
+level that does not decay from N = 500 to N = 16000. No knob in this model
+fixes that, including the one built specifically to fix it.
+
+The philosophical result is that the fine-tuning argument's machinery does not
+survive a case where the answer is checkable. Three numbers that ought to be
+bookkeeping turn out to carry the conclusion: the criterion (a factor of
+infinity here -- 0 becomes 0.117 on relaxing one threshold), the method
+(one-at-a-time understates the volume 40-70x), and the prior (3.6x). None of
+this shows the real universe is untuned. It shows that "tuned to one part in X"
+is not a measurement unless all three are pinned down, and in physics none of
+them are.
+
+Caveats. N = 2000, one seed topology (a 6-cycle), the shell estimator reads
+about 0.15 low, and at tau = 1.50 individual verdicts flip between seeds 15% of
+the time -- the fractions are stable across seeds (0.1167 vs 0.1100) but single
+points near the boundary are not.
 """
 
 import numpy as np
@@ -448,7 +584,7 @@ def main(target=2000, n_joint=600, n_wide=200, seeds=(11, 23)):
     hab = curve[tau_op]
     print("  Operating threshold for the rest of this run: tau = %.2f"
           % tau_op)
-    print("  (the tightest grid value leaving at least 5%% of the box alive)")
+    print("  (the tightest grid value leaving at least 5% of the box alive)")
     print()
 
     print("=" * 78)
